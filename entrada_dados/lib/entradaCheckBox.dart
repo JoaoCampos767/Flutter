@@ -18,8 +18,8 @@ class EntradaCheckboxState extends State<EntradaCheckbox> {
       body: Container(
         child: Column(children: [
           CheckboxListTile(
-              title: Text("Comida Brasileira"),
-              subtitle: Text("A melhor comida do mundo"),
+              title: const Text("Comida Brasileira"),
+              subtitle: const Text("A melhor comida do mundo"),
               activeColor: Colors.orange,
               //secondary: Icon(Icons.add_box),
               value: _comidaBrasileira,
@@ -29,8 +29,8 @@ class EntradaCheckboxState extends State<EntradaCheckbox> {
                 });
               }),
           CheckboxListTile(
-              title: Text("Comida Mexicana"),
-              subtitle: Text("A melhor comida do mundo"),
+              title: const Text("Comida Mexicana"),
+              subtitle: const Text("A melhor comida do mundo"),
               activeColor: Colors.red,
               //secondary: Icon(Icons.add_box),
               value: _comidaMexicana,
@@ -46,7 +46,7 @@ class EntradaCheckboxState extends State<EntradaCheckbox> {
                     "\nComida Mexicana: " +
                     _comidaMexicana.toString());
               },
-              child: Text(
+              child: const Text(
                 "Salvar",
                 style: TextStyle(fontSize: 20),
               ))
