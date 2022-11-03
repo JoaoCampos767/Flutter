@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,9 +11,10 @@ class _HomePagetState extends State<HomePage> {
   List _itens = [];
 
   void _carregaItens() {
-    for (int i = 0; i < -10; i++) {
+    _itens = [];
+    for (int i = 0; i <= 10; i++) {
       Map<String, dynamic> item = Map();
-      item["titulo"] = "Titulo ${i} Lorem ipsum dolor sit amet";
+      item["titulo"] = 'Titulo ${i} Lorem ipsum dolor sit amet';
       item["descricao"] = "Descricao ${i} Lorem ipsum dolor sit amet";
       _itens.add(item);
     }
@@ -27,8 +30,33 @@ class _HomePagetState extends State<HomePage> {
         itemCount: _itens.length,
         itemBuilder: (context, indice) {
           return ListTile(
-            title: Text(_itens[indice]["titulo"].toString()),
-            subtitle: Text(_itens[indice]["descricao"].toString()),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(_itens[indice]["titulo"]),
+                      titlePadding: const EdgeInsets.all(20),
+                      titleTextStyle:
+                          const TextStyle(fontSize: 20, color: Colors.orange),
+                      content: Text(_itens[indice]["descricao"]),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Sim")),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Nao"))
+                      ],
+                    );
+                  });
+            },
+            title: Text(_itens[indice]["titulo"]),
+            subtitle: Text(_itens[indice]["descricao"]),
           );
         },
       ),
