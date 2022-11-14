@@ -43,7 +43,10 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.account_circle))
         ],
       ),
-      body: telas[_indiceAtual],
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: telas[_indiceAtual],
+      ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _indiceAtual,
           onTap: (i) {

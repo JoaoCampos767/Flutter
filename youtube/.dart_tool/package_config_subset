@@ -1,3 +1,7 @@
+youtube
+2.18
+file:///C:/Joao/Proj/Flutter/youtube/
+file:///C:/Joao/Proj/Flutter/youtube/lib/
 async
 2.14
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.9.0/
@@ -114,8 +118,4 @@ flutter_test
 2.17
 file:///C:/src/flutter/packages/flutter_test/
 file:///C:/src/flutter/packages/flutter_test/lib/
-youtube
-2.18
-file:///D:/Joao/Proj/Flutter/youtube/
-file:///D:/Joao/Proj/Flutter/youtube/lib/
 2
