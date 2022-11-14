@@ -29,13 +29,25 @@ class _InicioState extends State<Inicio> {
               if (snapshot.hasData) {
                 return ListView.separated(
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [Text("Teste")],
-                    );
+                    List<Video>? videos = snapshot.data;
+                    Video video = videos![index];
+
+                    return Column(children: [
+                      Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(video.imagem!)))),
+                      ListTile(
+                        title: Text(video.titulo!),
+                        subtitle: Text(video.canal!),
+                      )
+                    ]);
                   },
                   separatorBuilder: (constext, index) => const Divider(
-                    height: 3,
-                    color: Colors.red,
+                    height: 2,
+                    color: Colors.grey,
                   ),
                   itemCount: snapshot.data!.length,
                 );
