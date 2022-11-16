@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youtube/CustomSearchDelegate.dart';
 import 'package:youtube/telas/biblioteca.dart';
 import 'package:youtube/telas/emalta.dart';
 import 'package:youtube/telas/inicio.dart';
@@ -11,10 +12,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _indiceAtual = 0;
+  String _resultado = "";
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> telas = [Inicio(), EmAlta(), Inscricoes(), Biblioteca()];
+    List<Widget> telas = [
+      Inicio(_resultado),
+      EmAlta(),
+      Inscricoes(),
+      Biblioteca()
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -27,20 +34,14 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                print("video");
-              },
-              icon: const Icon(Icons.videocam)),
-          IconButton(
-              onPressed: () {
-                print("pesquisa");
+              onPressed: () async {
+                String? res = await showSearch(
+                    context: context, delegate: CustomSearchDelegate());
+                setState(() {
+                  _resultado = res!;
+                });
               },
               icon: const Icon(Icons.search)),
-          IconButton(
-              onPressed: () {
-                print("conta");
-              },
-              icon: const Icon(Icons.account_circle))
         ],
       ),
       body: Container(

@@ -3,14 +3,18 @@ import '../api.dart';
 import '../model/video.dart';
 
 class Inicio extends StatefulWidget {
+  String pesquisa;
+
+  Inicio(this.pesquisa);
+
   @override
   State<Inicio> createState() => _InicioState();
 }
 
 class _InicioState extends State<Inicio> {
-  _listarVideos() {
+  _listarVideos(String pesquisa) {
     Api api = Api();
-    return api.pesquisar("");
+    return api.pesquisar(pesquisa);
   }
 
   @override
@@ -59,6 +63,6 @@ class _InicioState extends State<Inicio> {
               break;
           }
         },
-        future: _listarVideos());
+        future: _listarVideos(widget.pesquisa));
   }
 }
