@@ -10,6 +10,7 @@ var uri = Uri.parse(URL_BASE);
 
 class Api {
   Future<List<Video>> pesquisar(String pesquisa) async {
+    // ignore: prefer_interpolation_to_compose_strings
     http.Response response = await http.get(Uri.parse(URL_BASE +
         "search"
             "?part=snippet"
