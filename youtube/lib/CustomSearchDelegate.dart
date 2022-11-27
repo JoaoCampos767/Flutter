@@ -8,7 +8,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
           onPressed: () {
             query = "";
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(Icons.clear))
     ];
   }
 
@@ -18,7 +18,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
         onPressed: () {
           close(context, "");
         },
-        icon: Icon(Icons.arrow_back));
+        icon: const Icon(Icons.arrow_back));
   }
 
   @override
@@ -46,7 +46,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
                 title: Text(lista[index]));
           });
     } else {
-      return Center(
+      return const Center(
         child: Text("Nenhum resultado para essa pesquisa!"),
       );
     }
