@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  @override
   void iniState() {
     super.initState();
 
@@ -51,7 +50,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // _salvarArquivo();
+    _salvarArquivo();
     print(_listaTarefas.toString());
 
     return Scaffold(
