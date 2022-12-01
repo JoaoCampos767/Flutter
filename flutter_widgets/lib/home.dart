@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  List _lista = ["Joao", "Pedro", "Campos"];
+  final List _lista = ["Joao", "Pedro", "Campos"];
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,15 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         onDismissed: ((direction) {
-                          direction.toString();
+                          if (direction == DismissDirection.endToStart) {
+                            print("direcao: endToStart");
+                          } else if (direction == DismissDirection.startToEnd) {
+                            print("direcao: startToEnd");
+                          }
+
+                          setState(() {
+                            _lista.removeAt(index);
+                          });
                         }),
                         key: Key(item),
                         child: ListTile(
