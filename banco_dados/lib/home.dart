@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
       "nome": "João",
       "idade": 22,
     };
-    bd.update("usuarios", )
+    //bd.update("usuarios", );/
   }
 
   @override
