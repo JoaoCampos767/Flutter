@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,25 +11,43 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.only(
-                    top: 15, bottom: 15, right: 60, left: 60)),
-            child: const Text("Login"),
-          ),
-          const Padding(padding: EdgeInsets.only(bottom: 30)),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.only(
-                    top: 15, bottom: 15, right: 52, left: 50)),
-            child: const Text("Register"),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.all(15),
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Usuario',
+                  hintText: 'Digite seu Usuario',
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(15),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Senha',
+                  hintText: 'Digite sua senha',
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: const ButtonStyle(
+                  minimumSize: MaterialStatePropertyAll(Size(100, 45))),
+              child: const Text(
+                'Logar',
+                style: TextStyle(fontSize: 20),
+              ),
+              onPressed: () {},
+            )
+          ],
+        ),
       ),
     );
   }
