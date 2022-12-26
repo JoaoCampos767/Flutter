@@ -1,6 +1,7 @@
 import 'dart:html';
-
 import 'package:flutter/material.dart';
+import 'package:loginn/cadastro.dart';
+import 'package:loginn/login.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,40 +13,37 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(130),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.all(15),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Usuario',
-                  hintText: 'Digite seu Usuario',
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(15),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Senha',
-                  hintText: 'Digite sua senha',
-                ),
-              ),
-            ),
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
             ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Login()));
+              },
               style: const ButtonStyle(
-                  minimumSize: MaterialStatePropertyAll(Size(100, 45))),
+                minimumSize: MaterialStatePropertyAll(Size(150, 50)),
+              ),
               child: const Text(
-                'Logar',
+                'Entrar',
                 style: TextStyle(fontSize: 20),
               ),
-              onPressed: () {},
-            )
+            ),
+            const Padding(padding: EdgeInsets.all(10)),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Cadastrar()));
+                },
+                style: const ButtonStyle(
+                  minimumSize: MaterialStatePropertyAll(Size(150, 50)),
+                ),
+                child: const Text(
+                  'Cadastrar',
+                  style: TextStyle(fontSize: 20),
+                ))
           ],
         ),
       ),
