@@ -44,8 +44,8 @@ class _CadastroState extends State<Cadastro> {
         _mensagemErro =
             "Sua senha esta invalida. Colocar de 8 ou mais caracteres";
       });
-    }
-  }*/
+    }*/
+  }
 
   @override
   Widget build(BuildContext context) {
