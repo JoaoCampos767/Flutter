@@ -1,17 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp/cadastro.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Cadastro extends StatefulWidget {
+  const Cadastro({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Cadastro> createState() => _CadastroState();
 }
 
-class _LoginState extends State<Login> {
+class _CadastroState extends State<Cadastro> {
+  final TextEditingController _controllerNome = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerSenha = TextEditingController();
+
+  String _mensagemErro = "";
+
+  validarCampos() {
+    String nome = _controllerNome.text;
+    String email = _controllerEmail.text;
+    String senha = _controllerSenha.text;
+
+    /*if (nome.isEmpty) {
+      setState(() {
+        _mensagemErro = "Nome é obigatório, por favor preencha o mesmo!";
+      });
+    } else if (nome.length <= 3) {
+      setState(() {
+        _mensagemErro = "Nome invalido. Colocar mais de 3 caracteres";
+      });
+    } else if (email.isEmpty) {
+      setState(() {
+        _mensagemErro = "Email é obigatório, por favor preencha o mesmo!";
+      });
+    } else if (email.contains("@")) {
+      setState(() {
+        _mensagemErro = "Seu email não é valido.";
+      });
+    } else if (senha.isEmpty) {
+      setState(() {
+        _mensagemErro = "Senha é obrigatório, por favor preencha o mesmo!";
+      });
+    } else if (senha.length < 8) {
+      setState(() {
+        _mensagemErro =
+            "Sua senha esta invalida. Colocar de 8 ou mais caracteres";
+      });
+    }
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Cadastro"),
+      ),
       body: Container(
         decoration: const BoxDecoration(color: Color(0xff075E54)),
         padding: const EdgeInsets.all(16),
@@ -23,7 +64,7 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 32),
                   child: Image.asset(
-                    "images/logo.png",
+                    "images/usuario.png",
                     width: 150,
                     height: 100,
                   ),
@@ -31,7 +72,24 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: TextField(
+                    controller: _controllerNome,
                     autofocus: true,
+                    keyboardType: TextInputType.text,
+                    style: const TextStyle(fontSize: 20),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
+                      hintText: "Nome",
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: TextField(
+                    controller: _controllerEmail,
                     keyboardType: TextInputType.emailAddress,
                     style: const TextStyle(fontSize: 20),
                     decoration: InputDecoration(
@@ -45,6 +103,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 TextField(
+                  controller: _controllerSenha,
                   keyboardType: TextInputType.text,
                   style: const TextStyle(fontSize: 20),
                   decoration: InputDecoration(
@@ -59,14 +118,16 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.only(top: 16, bottom: 10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      validarCampos();
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                     child: const Text(
-                      "Entrar",
+                      "Cadastrar",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -74,22 +135,8 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Cadastro(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Não tem conta? Cadastre-se!",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                )
+                Text(_mensagemErro,
+                    style: const TextStyle(color: Colors.red, fontSize: 20))
               ],
             ),
           ),
