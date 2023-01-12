@@ -19,33 +19,31 @@ class _CadastroState extends State<Cadastro> {
     String email = _controllerEmail.text;
     String senha = _controllerSenha.text;
 
-    /*if (nome.isEmpty) {
+    if (nome.isNotEmpty) {
+      if (email.isNotEmpty && email.contains("@")) {
+        if (senha.isNotEmpty) {
+          setState(() {
+            _mensagemErro = "";
+          });
+          _cadastrarUsuario();
+        } else {
+          setState(() {
+            _mensagemErro = "Preencha a senha!";
+          });
+        }
+      } else {
+        setState(() {
+          _mensagemErro = "Preencha o E-mail utilizando @";
+        });
+      }
+    } else {
       setState(() {
-        _mensagemErro = "Nome é obigatório, por favor preencha o mesmo!";
+        _mensagemErro = "Preencha o Nome";
       });
-    } else if (nome.length <= 3) {
-      setState(() {
-        _mensagemErro = "Nome invalido. Colocar mais de 3 caracteres";
-      });
-    } else if (email.isEmpty) {
-      setState(() {
-        _mensagemErro = "Email é obigatório, por favor preencha o mesmo!";
-      });
-    } else if (email.contains("@")) {
-      setState(() {
-        _mensagemErro = "Seu email não é valido.";
-      });
-    } else if (senha.isEmpty) {
-      setState(() {
-        _mensagemErro = "Senha é obrigatório, por favor preencha o mesmo!";
-      });
-    } else if (senha.length < 8) {
-      setState(() {
-        _mensagemErro =
-            "Sua senha esta invalida. Colocar de 8 ou mais caracteres";
-      });
-    }*/
+    }
   }
+
+  _cadastrarUsuario() {}
 
   @override
   Widget build(BuildContext context) {
