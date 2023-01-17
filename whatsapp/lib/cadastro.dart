@@ -1,4 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:whatsapp/model/usuario.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
@@ -8,27 +11,36 @@ class Cadastro extends StatefulWidget {
 }
 
 class _CadastroState extends State<Cadastro> {
-  final TextEditingController _controllerNome = TextEditingController();
-  final TextEditingController _controllerEmail = TextEditingController();
-  final TextEditingController _controllerSenha = TextEditingController();
+  final TextEditingController _controllerNome =
+      TextEditingController(text: "Joao Campos");
+  final TextEditingController _controllerEmail =
+      TextEditingController(text: "joao.camposmbm@gmail.com");
+  final TextEditingController _controllerSenha =
+      TextEditingController(text: "951767Mbndjk");
 
   String _mensagemErro = "";
 
-  validarCampos() {
+  _validarCampos() {
     String nome = _controllerNome.text;
     String email = _controllerEmail.text;
     String senha = _controllerSenha.text;
 
     if (nome.isNotEmpty) {
       if (email.isNotEmpty && email.contains("@")) {
-        if (senha.isNotEmpty) {
+        if (senha.isNotEmpty && senha.length > 7) {
           setState(() {
             _mensagemErro = "";
           });
-          _cadastrarUsuario();
+
+          Usuario usuario = Usuario();
+          usuario.nome = nome;
+          usuario.email = email;
+          usuario.senha = senha;
+
+          _cadastrarUsuario(usuario);
         } else {
           setState(() {
-            _mensagemErro = "Preencha a senha!";
+            _mensagemErro = "Preencha a senha! Digite mais de 6 caracteres";
           });
         }
       } else {
@@ -43,7 +55,25 @@ class _CadastroState extends State<Cadastro> {
     }
   }
 
-  _cadastrarUsuario() {}
+  _cadastrarUsuario(Usuario usuario) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    auth
+        .createUserWithEmailAndPassword(
+      email: usuario.email,
+      password: usuario.senha,
+    )
+        .then((firebaseUser) {
+      setState(() {
+        _mensagemErro = "Sucesso ao cadastrar!";
+      });
+    }).catchError((error) {
+      setState(() {
+        _mensagemErro =
+            "Erro ao cadastrar, verifique os campos e tente novamente";
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +101,7 @@ class _CadastroState extends State<Cadastro> {
                   padding: const EdgeInsets.only(bottom: 8),
                   child: TextField(
                     controller: _controllerNome,
-                    autofocus: true,
+                    // autofocus: true,
                     keyboardType: TextInputType.text,
                     style: const TextStyle(fontSize: 20),
                     decoration: InputDecoration(
@@ -102,6 +132,7 @@ class _CadastroState extends State<Cadastro> {
                 ),
                 TextField(
                   controller: _controllerSenha,
+                  obscureText: true,
                   keyboardType: TextInputType.text,
                   style: const TextStyle(fontSize: 20),
                   decoration: InputDecoration(
@@ -117,7 +148,7 @@ class _CadastroState extends State<Cadastro> {
                   padding: const EdgeInsets.only(top: 16, bottom: 10),
                   child: ElevatedButton(
                     onPressed: () {
-                      validarCampos();
+                      _validarCampos();
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
@@ -133,8 +164,12 @@ class _CadastroState extends State<Cadastro> {
                     ),
                   ),
                 ),
-                Text(_mensagemErro,
-                    style: const TextStyle(color: Colors.red, fontSize: 20))
+                Center(
+                  child: Text(
+                    _mensagemErro,
+                    style: const TextStyle(color: Colors.red, fontSize: 20),
+                  ),
+                )
               ],
             ),
           ),

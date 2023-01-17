@@ -31,7 +31,7 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: TextField(
-                    autofocus: true,
+                    // autofocus: true,
                     keyboardType: TextInputType.emailAddress,
                     style: const TextStyle(fontSize: 20),
                     decoration: InputDecoration(
