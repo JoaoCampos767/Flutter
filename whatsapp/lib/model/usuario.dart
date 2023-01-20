@@ -1,14 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unnecessary_this
 class Usuario {
   String? _nome;
   String? _email;
   String? _senha;
 
-  Usuario();
+  String? get nome => this._nome;
 
-  get nome => this._nome;
-
-  set nome(value) => this._nome = value;
+  set nome(String? value) => this._nome = value;
 
   get email => this._email;
 
