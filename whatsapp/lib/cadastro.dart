@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:whatsapp/model/usuario.dart';
+
+import 'package:whatsapp/home.dart';
+import 'model/Usuario.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
@@ -11,12 +13,9 @@ class Cadastro extends StatefulWidget {
 }
 
 class _CadastroState extends State<Cadastro> {
-  final TextEditingController _controllerNome =
-      TextEditingController(text: "Joao Campos");
-  final TextEditingController _controllerEmail =
-      TextEditingController(text: "joao.camposmbm@gmail.com");
-  final TextEditingController _controllerSenha =
-      TextEditingController(text: "951767Mbndjk");
+  final TextEditingController _controllerNome = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerSenha = TextEditingController();
 
   String _mensagemErro = "";
 
@@ -55,22 +54,25 @@ class _CadastroState extends State<Cadastro> {
     }
   }
 
-  _cadastrarUsuario(Usuario usuario) {
+  _cadastrarUsuario(Usuario usuario) async {
+    await Firebase.initializeApp();
     FirebaseAuth auth = FirebaseAuth.instance;
 
     auth
         .createUserWithEmailAndPassword(
-      email: usuario.email,
-      password: usuario.senha,
-    )
+            email: usuario.email, password: usuario.senha)
         .then((firebaseUser) {
-      setState(() {
-        _mensagemErro = "Sucesso ao cadastrar!";
-      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Home(),
+        ),
+      );
     }).catchError((error) {
+      print("erro app: " + error.toString());
       setState(() {
         _mensagemErro =
-            "Erro ao cadastrar, verifique os campos e tente novamente";
+            "Erro ao cadastrar usuário, verifique os campos e tente novamente!";
       });
     });
   }

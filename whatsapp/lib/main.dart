@@ -1,11 +1,8 @@
 // @dart=2.9
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:whatsapp/home.dart';
 import 'package:whatsapp/login.dart';
 
-void main() async {
+void main() {
   /*WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();

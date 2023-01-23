@@ -80,7 +80,7 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Cadastro(),
+                          builder: (context) => Cadastro(),
                         ),
                       );
                     },
