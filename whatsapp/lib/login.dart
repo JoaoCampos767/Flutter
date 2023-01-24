@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp/cadastro.dart';
+import 'package:whatsapp/home.dart';
+
+import 'model/Usuario.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -9,6 +14,80 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerSenha = TextEditingController();
+
+  String _mensagemErro = "";
+
+  _validarCampos() {
+    String email = _controllerEmail.text;
+    String senha = _controllerSenha.text;
+
+    if (email.isNotEmpty && email.contains("@")) {
+      if (senha.isNotEmpty) {
+        setState(() {
+          _mensagemErro = "";
+        });
+
+        Usuario usuario = Usuario();
+        usuario.email = email;
+        usuario.senha = senha;
+
+        _logarUsuario(usuario);
+      } else {
+        setState(() {
+          _mensagemErro = "Preencha a senha!";
+        });
+      }
+    } else {
+      setState(() {
+        _mensagemErro = "Preencha o E-mail utilizando @";
+      });
+    }
+  }
+
+  _logarUsuario(Usuario usuario) async {
+    await Firebase.initializeApp();
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    auth
+        .signInWithEmailAndPassword(
+            email: usuario.email, password: usuario.senha)
+        .then((firebaseUser) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Home(),
+        ),
+      );
+    }).catchError((erro) {
+      setState(() {
+        _mensagemErro = "Erro ao tentar logar";
+      });
+    });
+  }
+
+  Future _verificaUsuarioLogado() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    User usuarioLogado = await auth.currentUser!;
+
+    if (usuarioLogado != null) {
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Home(),
+        ),
+      );
+    }
+  }
+
+  void initState() {
+    _verificaUsuarioLogado();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +111,7 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.only(bottom: 8),
                   child: TextField(
                     // autofocus: true,
+                    controller: _controllerEmail,
                     keyboardType: TextInputType.emailAddress,
                     style: const TextStyle(fontSize: 20),
                     decoration: InputDecoration(
@@ -45,6 +125,8 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 TextField(
+                  obscureText: true,
+                  controller: _controllerSenha,
                   keyboardType: TextInputType.text,
                   style: const TextStyle(fontSize: 20),
                   decoration: InputDecoration(
@@ -59,7 +141,9 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.only(top: 16, bottom: 10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _validarCampos();
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.green,
                         padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
@@ -80,13 +164,22 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Cadastro(),
+                          builder: (context) => const Cadastro(),
                         ),
                       );
                     },
                     child: const Text(
                       "Não tem conta? Cadastre-se!",
                       style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Center(
+                    child: Text(
+                      _mensagemErro,
+                      style: const TextStyle(color: Colors.red, fontSize: 20),
                     ),
                   ),
                 )

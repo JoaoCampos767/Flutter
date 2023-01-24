@@ -69,7 +69,6 @@ class _CadastroState extends State<Cadastro> {
         ),
       );
     }).catchError((error) {
-      print("erro app: " + error.toString());
       setState(() {
         _mensagemErro =
             "Erro ao cadastrar usuário, verifique os campos e tente novamente!";
