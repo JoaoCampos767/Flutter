@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp/cadastro.dart';
 import 'package:whatsapp/home.dart';
@@ -54,7 +56,7 @@ class _LoginState extends State<Login> {
         .signInWithEmailAndPassword(
             email: usuario.email, password: usuario.senha)
         .then((firebaseUser) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const Home(),
@@ -67,25 +69,21 @@ class _LoginState extends State<Login> {
     });
   }
 
-  Future _verificaUsuarioLogado() async {
+  _verificaUsuarioLogado() async {
     FirebaseAuth auth = FirebaseAuth.instance;
 
     User usuarioLogado = await auth.currentUser!;
 
+    // ignore: unnecessary_null_comparison
     if (usuarioLogado != null) {
       // ignore: use_build_context_synchronously
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const Home(),
         ),
       );
     }
-  }
-
-  void initState() {
-    _verificaUsuarioLogado();
-    super.initState();
   }
 
   @override

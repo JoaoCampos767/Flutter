@@ -3,6 +3,11 @@ class Usuario {
   String? _email;
   String? _senha;
 
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {"nome": nome, "email": email};
+    return map;
+  }
+
   get nome => _nome;
 
   set nome(value) => _nome = value;

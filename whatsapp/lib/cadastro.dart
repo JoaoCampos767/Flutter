@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,7 +63,15 @@ class _CadastroState extends State<Cadastro> {
         .createUserWithEmailAndPassword(
             email: usuario.email, password: usuario.senha)
         .then((firebaseUser) {
-      Navigator.push(
+      // Salvar Dados do Usuarios
+      FirebaseFirestore db = FirebaseFirestore.instance;
+
+      db
+          .collection("usuarios")
+          .doc(firebaseUser.user?.uid)
+          .set(usuario.toMap());
+
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const Home(),
