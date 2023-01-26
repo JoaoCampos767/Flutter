@@ -1,17 +1,8 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
-import 'package:whatsapp/login.dart';
+import 'package:whatsapp/telas/login.dart';
 
 void main() {
-  /*WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp();
-
-  FirebaseFirestore.instance
-      .collection("usuarios")
-      .doc("001")
-      .set({"nome": "Joao"});*/
-
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: const Login(),

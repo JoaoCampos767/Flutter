@@ -1,96 +1,94 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:whatsapp/telas/cadastro.dart';
+import 'package:whatsapp/telas/home.dart';
 
-import 'package:whatsapp/home.dart';
-import 'model/Usuario.dart';
+import '../model/usuario.dart';
 
-class Cadastro extends StatefulWidget {
-  const Cadastro({super.key});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
   @override
-  State<Cadastro> createState() => _CadastroState();
+  State<Login> createState() => _LoginState();
 }
 
-class _CadastroState extends State<Cadastro> {
-  final TextEditingController _controllerNome = TextEditingController();
+class _LoginState extends State<Login> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerSenha = TextEditingController();
 
   String _mensagemErro = "";
 
   _validarCampos() {
-    String nome = _controllerNome.text;
     String email = _controllerEmail.text;
     String senha = _controllerSenha.text;
 
-    if (nome.isNotEmpty) {
-      if (email.isNotEmpty && email.contains("@")) {
-        if (senha.isNotEmpty && senha.length > 7) {
-          setState(() {
-            _mensagemErro = "";
-          });
+    if (email.isNotEmpty && email.contains("@")) {
+      if (senha.isNotEmpty) {
+        setState(() {
+          _mensagemErro = "";
+        });
 
-          Usuario usuario = Usuario();
-          usuario.nome = nome;
-          usuario.email = email;
-          usuario.senha = senha;
+        Usuario usuario = Usuario();
+        usuario.email = email;
+        usuario.senha = senha;
 
-          _cadastrarUsuario(usuario);
-        } else {
-          setState(() {
-            _mensagemErro = "Preencha a senha! Digite mais de 6 caracteres";
-          });
-        }
+        _logarUsuario(usuario);
       } else {
         setState(() {
-          _mensagemErro = "Preencha o E-mail utilizando @";
+          _mensagemErro = "Preencha a senha!";
         });
       }
     } else {
       setState(() {
-        _mensagemErro = "Preencha o Nome";
+        _mensagemErro = "Preencha o E-mail utilizando @";
       });
     }
   }
 
-  _cadastrarUsuario(Usuario usuario) async {
+  _logarUsuario(Usuario usuario) async {
     await Firebase.initializeApp();
     FirebaseAuth auth = FirebaseAuth.instance;
 
     auth
-        .createUserWithEmailAndPassword(
+        .signInWithEmailAndPassword(
             email: usuario.email, password: usuario.senha)
         .then((firebaseUser) {
-      // Salvar Dados do Usuarios
-      FirebaseFirestore db = FirebaseFirestore.instance;
-
-      db
-          .collection("usuarios")
-          .doc(firebaseUser.user?.uid)
-          .set(usuario.toMap());
-
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const Home(),
         ),
       );
-    }).catchError((error) {
+    }).catchError((erro) {
       setState(() {
-        _mensagemErro =
-            "Erro ao cadastrar usuário, verifique os campos e tente novamente!";
+        _mensagemErro = "Erro ao tentar logar";
       });
     });
+  }
+
+  _verificaUsuarioLogado() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    User usuarioLogado = await auth.currentUser!;
+
+    // ignore: unnecessary_null_comparison
+    if (usuarioLogado != null) {
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Home(),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Cadastro"),
-      ),
       body: Container(
         decoration: const BoxDecoration(color: Color(0xff075E54)),
         padding: const EdgeInsets.all(16),
@@ -102,7 +100,7 @@ class _CadastroState extends State<Cadastro> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 32),
                   child: Image.asset(
-                    "images/usuario.png",
+                    "images/logo.png",
                     width: 150,
                     height: 100,
                   ),
@@ -110,23 +108,7 @@ class _CadastroState extends State<Cadastro> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: TextField(
-                    controller: _controllerNome,
                     // autofocus: true,
-                    keyboardType: TextInputType.text,
-                    style: const TextStyle(fontSize: 20),
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
-                      hintText: "Nome",
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: TextField(
                     controller: _controllerEmail,
                     keyboardType: TextInputType.emailAddress,
                     style: const TextStyle(fontSize: 20),
@@ -141,8 +123,8 @@ class _CadastroState extends State<Cadastro> {
                   ),
                 ),
                 TextField(
-                  controller: _controllerSenha,
                   obscureText: true,
+                  controller: _controllerSenha,
                   keyboardType: TextInputType.text,
                   style: const TextStyle(fontSize: 20),
                   decoration: InputDecoration(
@@ -166,7 +148,7 @@ class _CadastroState extends State<Cadastro> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                     child: const Text(
-                      "Cadastrar",
+                      "Entrar",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -175,9 +157,28 @@ class _CadastroState extends State<Cadastro> {
                   ),
                 ),
                 Center(
-                  child: Text(
-                    _mensagemErro,
-                    style: const TextStyle(color: Colors.red, fontSize: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Cadastro(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Não tem conta? Cadastre-se!",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Center(
+                    child: Text(
+                      _mensagemErro,
+                      style: const TextStyle(color: Colors.red, fontSize: 20),
+                    ),
                   ),
                 )
               ],
