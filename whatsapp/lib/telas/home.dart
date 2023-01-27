@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:whatsapp/telas/abas/abaContatos.dart';
-import 'package:whatsapp/telas/abas/abaConversas.dart';
+import 'package:whatsapp/abas/abaContatos.dart';
+import 'package:whatsapp/abas/abaConversas.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -55,8 +55,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       body: TabBarView(
         controller: _tabController,
         children: const [
-          AbaContatos(),
           AbaConversas(),
+          AbaContatos(),
         ],
       ),
     );
