@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp/routeGenerator.dart';
 import 'package:whatsapp/telas/cadastro.dart';
 import 'package:whatsapp/telas/home.dart';
 
@@ -74,15 +75,9 @@ class _LoginState extends State<Login> {
 
     User usuarioLogado = await auth.currentUser!;
 
-    // ignore: unnecessary_null_comparison
     if (usuarioLogado != null) {
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const Home(),
-        ),
-      );
+      Navigator.pushReplacementNamed(context, "/home");
     }
   }
 
