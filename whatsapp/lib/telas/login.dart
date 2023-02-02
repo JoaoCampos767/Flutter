@@ -57,12 +57,7 @@ class _LoginState extends State<Login> {
         .signInWithEmailAndPassword(
             email: usuario.email, password: usuario.senha)
         .then((firebaseUser) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const Home(),
-        ),
-      );
+      Navigator.pushReplacementNamed(context, "/home");
     }).catchError((erro) {
       setState(() {
         _mensagemErro = "Erro ao tentar logar";

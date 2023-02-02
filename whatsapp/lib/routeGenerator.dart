@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/telas/cadastro.dart';
+import 'package:whatsapp/telas/configuracoes.dart';
 import 'package:whatsapp/telas/home.dart';
 import 'package:whatsapp/telas/login.dart';
 
@@ -21,6 +22,10 @@ class RouteGeneretor {
       case "/home":
         return MaterialPageRoute(
           builder: (_) => const Home(),
+        );
+      case "/configuracoes":
+        return MaterialPageRoute(
+          builder: (_) => const Configuracoes(),
         );
         defautl:
         _erroRota();
