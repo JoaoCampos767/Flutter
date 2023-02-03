@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class Configuracoes extends StatefulWidget {
   const Configuracoes({super.key});
@@ -9,6 +11,28 @@ class Configuracoes extends StatefulWidget {
 
 class _ConfiguracoesState extends State<Configuracoes> {
   final TextEditingController _controllerNome = TextEditingController();
+
+  late File _imagem;
+
+  Future _recuperarImage(String origemImagem) async {
+    late File imagemSelecionada;
+
+    switch (origemImagem) {
+      case "camera":
+        imagemSelecionada =
+            await ImagePicker.pickImage(source: ImageSource.camera);
+        break;
+
+      case "galeria":
+        imagemSelecionada =
+            await ImagePicker.pickImage(source: ImageSource.gallery);
+        break;
+    }
+
+    setState(() {
+      _imagem = imagemSelecionada;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +56,15 @@ class _ConfiguracoesState extends State<Configuracoes> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _recuperarImage("camera");
+                      },
                       child: const Text("Câmera"),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _recuperarImage("galeria");
+                      },
                       child: const Text("Galeria"),
                     ),
                   ],
