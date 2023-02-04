@@ -1,5 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:io';
 
 class Configuracoes extends StatefulWidget {
@@ -13,6 +16,8 @@ class _ConfiguracoesState extends State<Configuracoes> {
   final TextEditingController _controllerNome = TextEditingController();
 
   late File _imagem;
+  late String _idUsuarioLogado;
+  bool _subindoImagem = false;
 
   Future _recuperarImage(String origemImagem) async {
     late File imagemSelecionada;
@@ -31,7 +36,56 @@ class _ConfiguracoesState extends State<Configuracoes> {
 
     setState(() {
       _imagem = imagemSelecionada;
+
+      if (_imagem != null) {
+        _subindoImagem = true;
+        _uploadImagem();
+      }
     });
+  }
+
+  Future _uploadImagem() async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference pastaRaiz = storage.ref();
+    Reference arquivo =
+        pastaRaiz.child("perfil").child(_idUsuarioLogado + ".jpg");
+
+    UploadTask task = arquivo.putFile(_imagem);
+
+    task.snapshotEvents.listen(
+      (event) {
+        // ignore: unrelated_type_equality_checks
+        if (event.runtimeType == TaskState.running) {
+          setState(() {
+            print("Entrou running");
+            _subindoImagem = true;
+          });
+          // ignore: unrelated_type_equality_checks
+        } else if (event.runtimeType == TaskState.success) {
+          setState(() {
+            print("Entrou success");
+            _subindoImagem = false;
+          });
+        }
+      },
+    );
+
+    await task.then((TaskSnapshot snapshot) {});
+  }
+
+  _recuperarDadosUsuario() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    User usuarioLogado = await auth.currentUser!;
+    _idUsuarioLogado = usuarioLogado.uid;
+
+    print("00210201000101000202022" + _idUsuarioLogado);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _recuperarDadosUsuario();
   }
 
   @override
@@ -46,6 +100,9 @@ class _ConfiguracoesState extends State<Configuracoes> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                _subindoImagem
+                    ? const CircularProgressIndicator()
+                    : Container(),
                 const CircleAvatar(
                   radius: 100,
                   backgroundImage: NetworkImage(
